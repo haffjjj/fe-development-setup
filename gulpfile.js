@@ -1,4 +1,4 @@
-const { src, dest, watch } = require('gulp')
+const { src, dest, watch, parallel } = require('gulp')
 const sass = require('gulp-sass')
 const uglify = require('gulp-uglify-es').default
 const concat = require('gulp-concat')
@@ -38,4 +38,11 @@ function _default() {
   watch('./dist/**/*').on('change', reload);
 }
 
-exports.default = _default
+exports.default = parallel(
+  parallel(
+    _copyHtml, 
+    _compileScss, 
+    _uglifyJs
+  ), 
+  _default
+)
